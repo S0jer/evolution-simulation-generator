@@ -1,0 +1,66 @@
+
+
+
+Mapa:
+ - step i dżungla (rośliny wolą rosnąć w dżungli, 80% szansy, że nowa roślina wyrośnie na preferowanym polu, 
+ a tylko 20% szans, że wyrośnie na polu drugiej kategorii)
+	- zalesione równiki - preferowany przez rośliny jest poziomy pas pól w centralnej części mapy (
+	udający równik i okolice);
+	- toksyczne trupy - rośliny preferują te pola, na których zwierzęta umierają najrzadziej - rosną 
+	na tych polach, na których najmniej zwierząt skończyło swój żywot w trakcie symulacji.
+ 
+ - kula ziemska - lewa i prawa krawędź mapy zapętlają się (jeżeli zwierzak wyjdzie za lewą krawędź, 
+ to pojawi się po prawej stronie - a jeżeli za prawą, to po lewej); górna i dolna krawędź mapy 
+ to bieguny - nie można tam wejść (jeżeli zwierzak próbuje wyjść poza te krawędzie mapy, to pozostaje 
+ na polu na którym był, a jego kierunek zmienia się na odwrotny);
+ 
+ - piekielny portal - jeżeli zwierzak wyjdzie poza krawędź mapy, to trafia do magicznego portalu; 
+ jego energia zmniejsza się o pewną wartość (taką samą jak w przypadku generacji potomka), 
+ a następnie jest teleportowany w nowe, losowe miejsce na mapie.
+ 
+	
+
+
+Maps elements:
+	Animal:
+		- posiadana energia,
+		- koordynaty (x, y) położenia, 
+		- strona w którą jest zwrócone zwierzę ( 8 opcji ),
+		- geny zwierzaka (N) gdzie każdy ma wartość od 0 do 7,
+		- indeks aktywnego genu (kiedy dotrze do końca listy to od początku),
+		
+		
+		Zachowania:
+			- zwierzę umiera jeśli nie ma energii,
+			- zwierzę obraca się zgodnie z kierunkiem ruchu zegara o:
+				0 - 0°
+				1 - 45°
+				2 - 90°
+				3 - 135°
+				4 - 180°
+				5 - 225°
+				6 - 270°
+				7 - 315°
+			
+	Plant:
+		- dostarcza "x" energii,
+		- koordynaty (x, y) położenia, 
+		
+		
+Konsumpcja i rozmnażanie:
+	- jeśli oba zwierzęta mają minimum K energii,
+	- tracą energię na rzecz potomka,
+	- urodzone otrzymuje genotyp od rodziców, udział genów jest proporcjonalny 
+	do energii rodziców i wyznacza miejsce podziału genotypu. W pierwszym kroku 
+	losowana jest strona genotypu, z której zostanie wzięta część osobnika silniejszego, 
+	np. prawa. W tym przypadku dziecko otrzymałoby odcinek obejmujący 25% lewych genów 
+	pierwszego rodzica oraz 75% prawych genów drugiego rodzica. Jeśli jednak wylosowana 
+	byłaby strona lewa, to dziecko otrzymałoby 75% lewych genów silniejszego osobnika 
+	oraz 25% prawych genów. Na koniec mają zaś miejsce mutacje: losowa liczba (wybranych 
+	również losowo) genów potomka zmienia swoje wartości na zupełnie nowe.
+		- pełna losowość - mutacja zmienia gen na dowolny inny gen;
+		- lekka korekta - mutacja zmienia gen o 1 w górę lub w dół (np. gen 3 może zostać 
+		zamieniony na 2 lub 4, a gen 0 na 1 lub 7).
+
+Symulacja: 
+	- https://github.com/apohllo/obiektowe-lab/tree/master/proj1#symulacja

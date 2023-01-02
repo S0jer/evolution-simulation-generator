@@ -33,4 +33,7 @@ public class Genotype {
         }
         return gene;
     }
+    public List<Gene> getGens() {
+        return gens;
+    }
 }

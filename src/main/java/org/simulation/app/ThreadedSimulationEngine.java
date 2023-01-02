@@ -12,26 +12,24 @@ public class ThreadedSimulationEngine implements Engine, Runnable {
 
     public ThreadedSimulationEngine(AbstractWorldMap map) {
         this.map = map;
-        this.moveDelay = 300;
+        this.moveDelay = 500;
     }
 
     @Override
     public void run() {
         while(true){
-//            this.map.deleteAnimals();
-//            this.map.moveAnimals();
-//            this.map.eatGrass();
-//            this.map.animalsBreed();
-//            this.map.placeGrass();
-//            this.map.incrementLifetime();
-//            dayFinished();
+            this.map.deleteAnimals();
+            this.map.moveAnimals();
+            this.map.animalsBreed();
+            this.map.placeGrass();
+            this.map.incrementLifetime();
+            dayFinished();
             try {
                 Thread.sleep(moveDelay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     public void addObserver(DayFinishedObserver observer){

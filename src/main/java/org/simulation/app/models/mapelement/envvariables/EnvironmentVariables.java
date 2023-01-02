@@ -1,20 +1,22 @@
 package org.simulation.app.models.mapelement.envvariables;
 
 public class EnvironmentVariables {
-    private static int MAP_WIDTH = 10;
-    private static int MAP_HEIGHT = 10;
-    private static boolean HELL = false;
-    private static int PLANTS_QUANTITY = 10;
+    private static int MAP_WIDTH = 20;
+    private static int MAP_HEIGHT = 20;
+    private static boolean HELL = true;
+    private static int PLANTS_QUANTITY = 4;
     private static int PLANTS_ENERGY = 4;
-    private static int NEW_PLANTS_QUANTITY = 5;
-    private static boolean CORPSES = false;
-    private static int ANIMALS_QUANTITY = 5;
+    private static int NEW_PLANTS_QUANTITY = 4;
+    private static boolean CORPSES = true;
+    private static int ANIMALS_QUANTITY = 7;
     private static int ANIMAL_ENERGY = 15;
     private static int MIN_PROPAGATION_ENERGY = 7;
     private static int PROPAGATION_LOSS = 4;
     private static boolean RANDOM_MUTATION = false;
     private static int GENOME_SIZE = 32;
     private static boolean CRAZY_ANIMALS = false;
+
+    private static int MOVE_ENERGY = 1;
 
     public static void setMapWidth(int mapWidth) {
         MAP_WIDTH = mapWidth;
@@ -24,8 +26,8 @@ public class EnvironmentVariables {
         MAP_HEIGHT = mapHeight;
     }
 
-    public static void setHELL(boolean HELL) {
-        EnvironmentVariables.HELL = HELL;
+    public static void setHELL(boolean hell) {
+        EnvironmentVariables.HELL = hell;
     }
 
     public static void setPlantsQuantity(int plantsQuantity) {
@@ -40,8 +42,8 @@ public class EnvironmentVariables {
         NEW_PLANTS_QUANTITY = newPlantsQuantity;
     }
 
-    public static void setCORPSES(boolean CORPSES) {
-        EnvironmentVariables.CORPSES = CORPSES;
+    public static void setCORPSES(boolean corpses) {
+        EnvironmentVariables.CORPSES = corpses;
     }
 
     public static void setAnimalsQuantity(int animalsQuantity) {
@@ -71,6 +73,8 @@ public class EnvironmentVariables {
     public static void setCrazyAnimals(boolean crazyAnimals) {
         CRAZY_ANIMALS = crazyAnimals;
     }
+
+    public static void setMoveEnergy(int moveEnergy) { MOVE_ENERGY = moveEnergy; }
 
     public static int getMapWidth() {
         return MAP_WIDTH;
@@ -126,5 +130,57 @@ public class EnvironmentVariables {
 
     public static boolean isCrazyAnimals() {
         return CRAZY_ANIMALS;
+    }
+
+    public static int getMoveEnergy() {
+        return MOVE_ENERGY;
+    }
+
+    public static String getValueAsString(EnvironmentVariable environmentVariable) {
+            switch (environmentVariable){
+                case MAP_WIDTH -> {
+                    return Integer.toString(getMapWidth());
+                }
+                case MAP_HEIGHT -> {
+                    return Integer.toString(getMapHeight());
+                }
+                case HELL -> {
+                    return Boolean.toString(isHELL());
+                }
+                case PLANTS_QUANTITY -> {
+                    return Integer.toString(getPlantsQuantity());
+                }
+                case PLANTS_ENERGY -> {
+                    return Integer.toString(getPlantsEnergy());
+                }
+                case NEW_PLANTS_QUANTITY -> {
+                    return Integer.toString(getNewPlantsQuantity());
+                }
+                case CORPSES -> {
+                    return Boolean.toString(isCORPSES());
+                }
+                case ANIMALS_QUANTITY -> {
+                    return Integer.toString(getAnimalsQuantity());
+                }
+                case ANIMAL_ENERGY -> {
+                    return Integer.toString(getAnimalEnergy());
+                }
+                case MIN_PROPAGATION_ENERGY -> {
+                    return Integer.toString(getMinPropagationEnergy());
+                }
+                case PROPAGATION_LOSS -> {
+                    return Integer.toString(getPropagationLoss());
+                }
+                case RANDOM_MUTATION -> {
+                    return Boolean.toString(isRandomMutation());
+                }
+                case GENOME_SIZE -> {
+                    return Integer.toString(getGenomeSize());
+                }
+                case CRAZY_ANIMALS -> {
+                    return Boolean.toString(isCrazyAnimals());
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + environmentVariable);
+            }
     }
 }

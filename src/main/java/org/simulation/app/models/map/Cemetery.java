@@ -17,20 +17,20 @@ public class Cemetery {
 
 
     public Cemetery() {
-        for(int i = 0; i < width; i++){
-            for(int j = 0; j < height; j++){
-               cemetery.put(new Vector2d(i, j), 0);
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+               cemetery.put(new Vector2d(j, i), 0);
             }
         }
         this.minDeathsCounter = cemetery.keySet().size();
     }
 
-    public List<Integer> getMinDeathsPositionsList() {
-        return cemetery.values().stream().filter(x -> x.equals(minDeathsValue)).toList();
+    public List<Vector2d> getMinDeathsPositionsList() {
+        return cemetery.keySet().stream().filter(x -> cemetery.get(x).equals(minDeathsValue)).toList();
     }
 
-    public List<Integer> getOtherDeathsPositionsList() {
-        return cemetery.values().stream().filter(x -> !x.equals(minDeathsValue)).toList();
+    public List<Vector2d> getOtherDeathsPositionsList() {
+        return cemetery.keySet().stream().filter(x -> !cemetery.get(x).equals(minDeathsValue)).toList();
     }
 
     public void animalDeath(Vector2d gravePosition){

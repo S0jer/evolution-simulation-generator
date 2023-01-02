@@ -7,14 +7,14 @@ import org.simulation.app.DayFinishedObserver;
 import org.simulation.app.models.map.AbstractWorldMap;
 
 public class Chart implements DayFinishedObserver {
-    private final LineChart<Number,Number> lineChart;
+    private final LineChart<Number, Number> lineChart;
     private final AbstractWorldMap map;
     private int daysCounter;
-    private final XYChart.Series<Number,Number> animalSeries;
-    private final XYChart.Series<Number,Number> grassSeries;
-    private final XYChart.Series<Number,Number> avgEnergySeries;
-    private final XYChart.Series<Number,Number> avgLifetimeSeries;
-    private final XYChart.Series<Number,Number> avgChildrenSeries;
+    private final XYChart.Series<Number, Number> animalSeries;
+    private final XYChart.Series<Number, Number> grassSeries;
+    private final XYChart.Series<Number, Number> avgEnergySeries;
+    private final XYChart.Series<Number, Number> avgLifetimeSeries;
+    private final XYChart.Series<Number, Number> avgChildrenSeries;
 
     public Chart(AbstractWorldMap map) {
         this.map = map;
@@ -23,7 +23,7 @@ public class Chart implements DayFinishedObserver {
         final NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("days");
 
-        this.lineChart = new LineChart<>(xAxis,yAxis);
+        this.lineChart = new LineChart<>(xAxis, yAxis);
 
         this.animalSeries = new XYChart.Series<>();
         animalSeries.setName("Animals");
@@ -38,7 +38,8 @@ public class Chart implements DayFinishedObserver {
 
         addSeries();
     }
-    private void addSeries(){
+
+    private void addSeries() {
         this.lineChart.getData().add(animalSeries);
         this.lineChart.getData().add(grassSeries);
         this.lineChart.getData().add(avgEnergySeries);
@@ -53,12 +54,13 @@ public class Chart implements DayFinishedObserver {
     }
 
     private void update() {
-        animalSeries.getData().add(new XYChart.Data<>(daysCounter,map.countAnimals()));
-        grassSeries.getData().add(new XYChart.Data<>(daysCounter,map.countPlants()));
-        avgEnergySeries.getData().add(new XYChart.Data<>(daysCounter,map.countAvgEnergy()));
-        avgLifetimeSeries.getData().add(new XYChart.Data<>(daysCounter,map.countAvgLifetime()));
-        avgChildrenSeries.getData().add(new XYChart.Data<>(daysCounter,map.countAvgChildren()));
+        animalSeries.getData().add(new XYChart.Data<>(daysCounter, map.countAnimals()));
+        grassSeries.getData().add(new XYChart.Data<>(daysCounter, map.countPlants()));
+        avgEnergySeries.getData().add(new XYChart.Data<>(daysCounter, map.countAvgEnergy()));
+        avgLifetimeSeries.getData().add(new XYChart.Data<>(daysCounter, map.countAvgLifetime()));
+        avgChildrenSeries.getData().add(new XYChart.Data<>(daysCounter, map.countAvgChildren()));
     }
+
     public LineChart<Number, Number> getLineChart() {
         return lineChart;
     }

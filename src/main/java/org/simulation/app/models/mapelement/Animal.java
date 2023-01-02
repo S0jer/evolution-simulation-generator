@@ -19,24 +19,24 @@ public class Animal implements MapElement, Comparable<Animal> {
 
     private final WorldMap worldMap;
     private Vector2d animalPosition;
-    private Energy animalEnergy;
+    private final Energy animalEnergy;
     private MapDirection animalMapDirection;
     private final Set<PositionChangeObserver> observers = new HashSet<>();
-    private RandomBehaviorGenerator randomBehaviorGenerator = new RandomBehaviorGenerator();
+    private final RandomBehaviorGenerator randomBehaviorGenerator = new RandomBehaviorGenerator();
 
     private Integer lifetime;
 
     private Integer children;
 
-    private Genotype genotype;
+    private final Genotype genotype;
 
 
-    public Animal(WorldMap worldMap, Vector2d animalPosition, Integer animalEnergy, MapDirection animalMapDirection, List<Integer> animalGens, Integer animalCurrentGen) {
+    public Animal(WorldMap worldMap, Vector2d animalPosition, Integer animalEnergy, MapDirection animalMapDirection, List<Integer> animalGens) {
         this.worldMap = worldMap;
         this.animalPosition = animalPosition;
         this.animalEnergy = new Energy(animalEnergy);
         this.animalMapDirection = animalMapDirection;
-        this.genotype = new Genotype(animalGens);
+        this.genotype = new Genotype(animalGens, EnvironmentVariables.isRandomMutation());
         this.lifetime = 0;
         this.children = 0;
     }
@@ -60,7 +60,8 @@ public class Animal implements MapElement, Comparable<Animal> {
         Vector2d oldAnimalPosition = this.animalPosition;
         Vector2d newAnimalPosition = this.animalPosition.add(this.animalMapDirection.toUnitVector());
         Vector2d properPosition = this.worldMap.canMoveTo(oldAnimalPosition, newAnimalPosition);
-        if (EnvironmentVariables.isHELL() && !newAnimalPosition.equals(properPosition)) this.animalEnergy.lose(EnvironmentVariables.getMinPropagationEnergy());
+        if (EnvironmentVariables.isHELL() && !newAnimalPosition.equals(properPosition))
+            this.animalEnergy.lose(EnvironmentVariables.getMinPropagationEnergy());
         this.animalPosition = properPosition;
         positionChanged(oldAnimalPosition, properPosition);
     }
@@ -114,9 +115,9 @@ public class Animal implements MapElement, Comparable<Animal> {
     public String getPathToImage() {
         if (this.animalEnergy.getEnergyCount() >= EnvironmentVariables.getAnimalEnergy()) {
             return "src/main/resources/animal-green.png";
-        } else if (this.animalEnergy.getEnergyCount() >= EnvironmentVariables.getAnimalEnergy()/2) {
+        } else if (this.animalEnergy.getEnergyCount() >= EnvironmentVariables.getAnimalEnergy() / 2) {
             return "src/main/resources/animal-yellow.png";
-        }else{
+        } else {
             return "src/main/resources/animal-red.png";
         }
     }
@@ -133,26 +134,23 @@ public class Animal implements MapElement, Comparable<Animal> {
         this.animalEnergy.lose(this.animalEnergy.getEnergyCount() * firstParentP);
         secondParent.getEnergy().lose(secondParent.getEnergy().getEnergyCount() * secondParentP);
         Integer childEnergy = this.animalEnergy.getEnergyCount() * firstParentP + secondParent.getEnergy().getEnergyCount() * secondParentP;
-        Integer directId = this.randomBehaviorGenerator.numberToGenerator(8);
+        int directId = this.randomBehaviorGenerator.numberToGenerator(8);
         MapDirection mapDirection = MapDirection.values()[directId];
-        Integer animalCurrentGen = this.randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getGenomeSize());
-        Integer getBorderPart = this.randomBehaviorGenerator.numberToGenerator(2);
+        int getBorderPart = this.randomBehaviorGenerator.numberToGenerator(2);
         List<Gene> animalGens = new ArrayList<>();
         List<Integer> animalsGensValues;
+        int getBorderPoint;
         if (getBorderPart == 0) {
-            Integer getBorderPoint = EnvironmentVariables.getGenomeSize() * firstParentP;
-            animalGens.addAll(this.genotype.getGens().subList(0, getBorderPoint + 1));
-            animalGens.addAll(secondParent.getGenotype().getGens().subList(getBorderPoint + 1, EnvironmentVariables.getGenomeSize()));
-            animalsGensValues = animalGens.stream().map(Gene::getValue).toList();
+            getBorderPoint = EnvironmentVariables.getGenomeSize() * firstParentP;
 
         } else {
-            Integer getBorderPoint = EnvironmentVariables.getGenomeSize() * secondParentP;
-            animalGens.addAll(this.genotype.getGens().subList(0, getBorderPoint + 1));
-            animalGens.addAll(secondParent.getGenotype().getGens().subList(getBorderPoint + 1, EnvironmentVariables.getGenomeSize()));
-            animalsGensValues = animalGens.stream().map(Gene::getValue).toList();
+            getBorderPoint = EnvironmentVariables.getGenomeSize() * secondParentP;
         }
+        animalGens.addAll(this.genotype.getGens().subList(0, getBorderPoint + 1));
+        animalGens.addAll(secondParent.getGenotype().getGens().subList(getBorderPoint + 1, EnvironmentVariables.getGenomeSize()));
+        animalsGensValues = animalGens.stream().map(Gene::getValue).toList();
 
-        return new Animal(this.worldMap, this.animalPosition, childEnergy, mapDirection, animalsGensValues, animalCurrentGen);
+        return new Animal(this.worldMap, this.animalPosition, childEnergy, mapDirection, animalsGensValues);
     }
 
     @Override

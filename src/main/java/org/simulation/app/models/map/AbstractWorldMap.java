@@ -34,7 +34,7 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
         if (worldMap.get(position) != null) {
             return worldMap.get(position).stream().filter(Animal.class::isInstance).map(Animal.class::cast).toList();
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 
@@ -44,12 +44,11 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
     }
 
     @Override
-    public boolean place(Animal mapElement) {
+    public void place(Animal mapElement) {
         this.worldMap.computeIfAbsent(mapElement.getPosition(), k -> new ArrayList<>());
-        if (mapElement instanceof Animal) animalsOnMap.add((Animal) mapElement);
+        animalsOnMap.add(mapElement);
         this.worldMap.get(mapElement.getPosition()).add(mapElement);
         mapElement.addObserver(this);
-        return true;
     }
 
     @Override
@@ -96,11 +95,6 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
         } else if (mapElement instanceof Plant) {
             plantsOnMap.remove(mapElement);
         }
-    }
-
-    @Override
-    public List<Vector2d> getBorders() {
-        return null;
     }
 
     public void moveAnimals() {
@@ -159,15 +153,15 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
 
     @Override
     public Genotype countDominantGenome() {
-        Map<Genotype,Integer> ranking = new HashMap<>();
+        Map<Genotype, Integer> ranking = new HashMap<>();
         ranking.put(new Genotype(new ArrayList<>()), 1);
-        for(Animal animal: this.animalsOnMap){
-            ranking.putIfAbsent(animal.getGenotype(),1);
-            ranking.put(animal.getGenotype(), ranking.get(animal.getGenotype())+1);
+        for (Animal animal : this.animalsOnMap) {
+            ranking.putIfAbsent(animal.getGenotype(), 1);
+            ranking.put(animal.getGenotype(), ranking.get(animal.getGenotype()) + 1);
         }
-        for(Animal animal: deadAnimals){
-            ranking.putIfAbsent(animal.getGenotype(),1);
-            ranking.put(animal.getGenotype(), ranking.get(animal.getGenotype())+1);
+        for (Animal animal : deadAnimals) {
+            ranking.putIfAbsent(animal.getGenotype(), 1);
+            ranking.put(animal.getGenotype(), ranking.get(animal.getGenotype()) + 1);
         }
         return Collections.max(ranking.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
@@ -181,9 +175,9 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
     }
 
     public MapElement objectAt(Vector2d position) {
-        if (worldMap.get(position) != null && !worldMap.get(position).isEmpty()){
-            return worldMap.get(position).get(worldMap.get(position).size()-1);
-        }else{
+        if (worldMap.get(position) != null && !worldMap.get(position).isEmpty()) {
+            return worldMap.get(position).get(worldMap.get(position).size() - 1);
+        } else {
             return null;
         }
     }
@@ -200,26 +194,26 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
     public int countAvgEnergy() {
         int counter = 0;
         int energy = 0;
-        for(Animal animal : this.animalsOnMap){
+        for (Animal animal : this.animalsOnMap) {
             energy += animal.getEnergy().getEnergyCount();
             counter++;
         }
-        if (counter > 0){
-            return energy/counter;
-        }else return 0;
+        if (counter > 0) {
+            return energy / counter;
+        } else return 0;
     }
 
 
     public int countAvgLifetime() {
         int counter = 0;
         int lifetime = 0;
-        for (Animal animal: deadAnimals){
+        for (Animal animal : deadAnimals) {
             lifetime += animal.getLifetime();
             counter++;
         }
-        if (counter > 0){
-            return lifetime/counter;
-        }else{
+        if (counter > 0) {
+            return lifetime / counter;
+        } else {
             return 0;
         }
     }
@@ -227,12 +221,12 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
     public int countAvgChildren() {
         int counter = 0;
         int children = 0;
-        for (Animal animal: this.animalsOnMap){
+        for (Animal animal : this.animalsOnMap) {
             counter++;
             children += animal.getChildren();
         }
         if (counter > 0) {
-            return children/counter;
+            return children / counter;
         } else {
             return 0;
         }

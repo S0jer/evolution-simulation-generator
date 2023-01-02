@@ -18,7 +18,7 @@ public class Energy {
         this.energyCount -= usedValue;
     }
 
-    public Energy subtract(Energy other){
+    public Energy subtract(Energy other) {
         if (this.energyCount - other.getEnergyCount() < 0) return new Energy(0);
         return new Energy(this.energyCount - other.getEnergyCount());
     }

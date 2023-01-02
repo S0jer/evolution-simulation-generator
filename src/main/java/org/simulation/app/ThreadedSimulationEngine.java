@@ -17,7 +17,7 @@ public class ThreadedSimulationEngine implements Engine, Runnable {
 
     @Override
     public void run() {
-        while(true){
+        while (true) {
             this.map.deleteAnimals();
             this.map.moveAnimals();
             this.map.animalsBreed();
@@ -32,10 +32,11 @@ public class ThreadedSimulationEngine implements Engine, Runnable {
         }
     }
 
-    public void addObserver(DayFinishedObserver observer){
+    public void addObserver(DayFinishedObserver observer) {
         observers.add(observer);
     }
-    public void dayFinished(){
+
+    public void dayFinished() {
         observers.forEach(DayFinishedObserver::dayFinished);
     }
 }

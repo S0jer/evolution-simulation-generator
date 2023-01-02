@@ -17,6 +17,7 @@ public class Gene implements Comparable<Gene> {
     public int getValue() {
         return value;
     }
+
     @Override
     public int compareTo(Gene o) {
         return Integer.compare(this.getValue(), o.getValue());
@@ -26,6 +27,7 @@ public class Gene implements Comparable<Gene> {
     public boolean equals(Object obj) {
         return super.equals(obj);
     }
+
     @Override
     public int hashCode() {
         return super.hashCode();

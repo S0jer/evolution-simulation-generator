@@ -11,22 +11,13 @@ public interface WorldMap {
 
     Vector2d canMoveTo(Vector2d oldPosition, Vector2d newPosition);
 
-
     List<MapElement> objectsAt(Vector2d position);
 
     List<Animal> animalsAt(Vector2d position);
 
-    /**
-     * Place an worldMapElement on the map.
-     *
-     * @param mapElement The animal to place on the map.
-     * @return True if the animal was placed. The animal cannot be placed if the map is already occupied.
-     */
-    boolean place(Animal mapElement);
+    void place(Animal mapElement);
 
     boolean isOccupied(Vector2d pos);
-
-    List<Vector2d> getBorders();
 
     Genotype countDominantGenome();
 }

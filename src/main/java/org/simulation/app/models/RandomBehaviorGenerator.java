@@ -13,7 +13,7 @@ public class RandomBehaviorGenerator {
         return generator.nextInt(value);
     }
 
-    public int numberExceptGenerator(int bottomRange, int upperRangeBottom,int upperRangeUpper) {
+    public int numberExceptGenerator(int bottomRange, int upperRangeBottom, int upperRangeUpper) {
         int chosenRange = numberToGenerator(2);
         int chosenValue;
         if (chosenRange == 0) {

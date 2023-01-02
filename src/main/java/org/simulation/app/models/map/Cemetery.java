@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Cemetery {
 
-    private final Map<Vector2d, Integer> cemetery = new HashMap<>();
+    private final Map<Vector2d, Integer> cemeteryMap = new HashMap<>();
     Integer width = EnvironmentVariables.getMapWidth();
     Integer height = EnvironmentVariables.getMapHeight();
     Integer minDeathsCounter;
@@ -17,37 +17,37 @@ public class Cemetery {
 
 
     public Cemetery() {
-        for(int i = 0; i < height; i++){
-            for(int j = 0; j < width; j++){
-               cemetery.put(new Vector2d(j, i), 0);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                cemeteryMap.put(new Vector2d(j, i), 0);
             }
         }
-        this.minDeathsCounter = cemetery.keySet().size();
+        this.minDeathsCounter = cemeteryMap.keySet().size();
     }
 
     public List<Vector2d> getMinDeathsPositionsList() {
-        return cemetery.keySet().stream().filter(x -> cemetery.get(x).equals(minDeathsValue)).toList();
+        return cemeteryMap.keySet().stream().filter(x -> cemeteryMap.get(x).equals(minDeathsValue)).toList();
     }
 
     public List<Vector2d> getOtherDeathsPositionsList() {
-        return cemetery.keySet().stream().filter(x -> !cemetery.get(x).equals(minDeathsValue)).toList();
+        return cemeteryMap.keySet().stream().filter(x -> !cemeteryMap.get(x).equals(minDeathsValue)).toList();
     }
 
-    public void animalDeath(Vector2d gravePosition){
-        Integer deathsAtGravePosition = cemetery.get(gravePosition);
-        if(deathsAtGravePosition.equals(minDeathsValue)){
+    public void animalDeath(Vector2d gravePosition) {
+        Integer deathsAtGravePosition = cemeteryMap.get(gravePosition);
+        if (deathsAtGravePosition.equals(minDeathsValue)) {
             minDeathsCounter -= 1;
             updateMinDeaths();
         }
         deathsAtGravePosition += 1;
-        cemetery.put(gravePosition, deathsAtGravePosition);
+        cemeteryMap.put(gravePosition, deathsAtGravePosition);
     }
 
 
     private void updateMinDeaths() {
-        if (minDeathsCounter <= 0){
+        if (minDeathsCounter <= 0) {
             minDeathsValue += 1;
-            minDeathsCounter = cemetery.values().stream().filter(x -> x.equals(minDeathsValue)).toList().size();
+            minDeathsCounter = cemeteryMap.values().stream().filter(x -> x.equals(minDeathsValue)).toList().size();
         }
     }
 }

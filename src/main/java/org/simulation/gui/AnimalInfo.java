@@ -12,7 +12,7 @@ public class AnimalInfo {
     private final Animal animal;
     private final VBox info;
     private final Label children;
-//    private final Label progeny;
+    //    private final Label progeny;
     private final Label death;
 
     public AnimalInfo(Animal animal) {
@@ -42,7 +42,7 @@ public class AnimalInfo {
         death.setFont(basicFont);
 
 
-        this.info = new VBox(title,genom,childrenBox,death);
+        this.info = new VBox(title, genom, childrenBox, death);
         this.info.setAlignment(Pos.CENTER);
         this.info.setSpacing(20);
     }
@@ -50,7 +50,7 @@ public class AnimalInfo {
     public void update() {
         children.setText(String.valueOf(animal.getChildren()));
 //        progeny.setText(String.valueOf(animal.countChildrenProgeny(new LinkedList<>())));
-        if(animal.getEnergy().isDead()){
+        if (animal.getEnergy().isDead()) {
             death.setText(String.valueOf(animal.getLifetime()));
         }
     }

@@ -9,8 +9,8 @@ import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 import java.util.List;
 
 public class Plant implements MapElement {
-    private WorldMap worldMap;
-    private Cemetery cemetery;
+    private final WorldMap worldMap;
+    private final Cemetery cemetery;
     private Vector2d plantPosition;
     private final RandomBehaviorGenerator randomBehaviorGenerator = new RandomBehaviorGenerator();
 
@@ -32,7 +32,7 @@ public class Plant implements MapElement {
         int poolChooseNumber = randomBehaviorGenerator.behaviorGenerator();
         if (EnvironmentVariables.isCORPSES()) {
             List<Vector2d> numbersPool = this.cemetery.getOtherDeathsPositionsList();
-            if (numbersPool != null && !numbersPool.isEmpty() && (poolChooseNumber == 0 || poolChooseNumber == 1)){
+            if (numbersPool != null && !numbersPool.isEmpty() && (poolChooseNumber == 0 || poolChooseNumber == 1)) {
 
                 int randomIndex = randomBehaviorGenerator.numberToGenerator(numbersPool.size());
                 return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
@@ -47,7 +47,7 @@ public class Plant implements MapElement {
             int mapHeight = EnvironmentVariables.getMapHeight();
             int bottomBorder = (int) ((mapHeight / 2) - mapHeight * 0.1);
             int upperBorder = (int) ((mapHeight / 2) + mapHeight * 0.1);
-            if(poolChooseNumber == 0 || poolChooseNumber == 1) {
+            if (poolChooseNumber == 0 || poolChooseNumber == 1) {
                 return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
                         randomBehaviorGenerator.numberExceptGenerator(bottomBorder, upperBorder, mapHeight));
             } else {

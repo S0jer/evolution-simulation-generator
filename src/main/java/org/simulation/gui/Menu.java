@@ -28,10 +28,10 @@ public class Menu {
 
 
         createMenu();
-        this.scene = new Scene(borderPane,1280,720);
+        this.scene = new Scene(borderPane, 1280, 720);
     }
 
-    private void createMenu(){
+    private void createMenu() {
 //        EnvironmentVariables
         VBox environmentVariables = new VBox(
                 addParameter(EnvironmentVariable.MAP_WIDTH),
@@ -67,7 +67,8 @@ public class Menu {
         menu.setAlignment(Pos.CENTER);
         this.borderPane.setCenter(menu);
     }
-    private HBox addParameter(EnvironmentVariable environmentVariable){
+
+    private HBox addParameter(EnvironmentVariable environmentVariable) {
         Label name = new Label(environmentVariable.toString());
         TextField input = new TextField();
         HBox hbox = new HBox(name, input);
@@ -77,9 +78,10 @@ public class Menu {
         environmentVariables.put(environmentVariable, input);
         return hbox;
     }
-    public void submitInputs(){
-        environmentVariables.forEach((key,value) -> {
-            switch (key){
+
+    public void submitInputs() {
+        environmentVariables.forEach((key, value) -> {
+            switch (key) {
                 case MAP_WIDTH -> {
                     EnvironmentVariables.setMapWidth(Integer.parseInt(value.getText()));
                 }

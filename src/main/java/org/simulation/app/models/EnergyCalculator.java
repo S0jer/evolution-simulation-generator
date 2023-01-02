@@ -10,15 +10,16 @@ public class EnergyCalculator {
     private static final Energy breedEnergy = new Energy(EnvironmentVariables.getMinPropagationEnergy());
 
 
-
-    public static Energy calculateBreedEnergy(Energy currentEnergy){
-        Integer calculatedBreedEnergy = currentEnergy.getEnergyCount()/4;
+    public static Energy calculateBreedEnergy(Energy currentEnergy) {
+        Integer calculatedBreedEnergy = currentEnergy.getEnergyCount() / 4;
         return currentEnergy.subtract(new Energy(calculatedBreedEnergy));
     }
-    public static boolean isTooLowOnEnergy(Energy currentEnergy){
+
+    public static boolean isTooLowOnEnergy(Energy currentEnergy) {
         return currentEnergy.getEnergyCount() < moveEnergy.getEnergyCount();
     }
-    public static boolean canBreed(Energy currentEnergy){
+
+    public static boolean canBreed(Energy currentEnergy) {
         return currentEnergy.getEnergyCount() > breedEnergy.getEnergyCount();
     }
 }

@@ -74,7 +74,9 @@ public class EnvironmentVariables {
         CRAZY_ANIMALS = crazyAnimals;
     }
 
-    public static void setMoveEnergy(int moveEnergy) { MOVE_ENERGY = moveEnergy; }
+    public static void setMoveEnergy(int moveEnergy) {
+        MOVE_ENERGY = moveEnergy;
+    }
 
     public static int getMapWidth() {
         return MAP_WIDTH;
@@ -137,50 +139,50 @@ public class EnvironmentVariables {
     }
 
     public static String getValueAsString(EnvironmentVariable environmentVariable) {
-            switch (environmentVariable){
-                case MAP_WIDTH -> {
-                    return Integer.toString(getMapWidth());
-                }
-                case MAP_HEIGHT -> {
-                    return Integer.toString(getMapHeight());
-                }
-                case HELL -> {
-                    return Boolean.toString(isHELL());
-                }
-                case PLANTS_QUANTITY -> {
-                    return Integer.toString(getPlantsQuantity());
-                }
-                case PLANTS_ENERGY -> {
-                    return Integer.toString(getPlantsEnergy());
-                }
-                case NEW_PLANTS_QUANTITY -> {
-                    return Integer.toString(getNewPlantsQuantity());
-                }
-                case CORPSES -> {
-                    return Boolean.toString(isCORPSES());
-                }
-                case ANIMALS_QUANTITY -> {
-                    return Integer.toString(getAnimalsQuantity());
-                }
-                case ANIMAL_ENERGY -> {
-                    return Integer.toString(getAnimalEnergy());
-                }
-                case MIN_PROPAGATION_ENERGY -> {
-                    return Integer.toString(getMinPropagationEnergy());
-                }
-                case PROPAGATION_LOSS -> {
-                    return Integer.toString(getPropagationLoss());
-                }
-                case RANDOM_MUTATION -> {
-                    return Boolean.toString(isRandomMutation());
-                }
-                case GENOME_SIZE -> {
-                    return Integer.toString(getGenomeSize());
-                }
-                case CRAZY_ANIMALS -> {
-                    return Boolean.toString(isCrazyAnimals());
-                }
-                default -> throw new IllegalStateException("Unexpected value: " + environmentVariable);
+        switch (environmentVariable) {
+            case MAP_WIDTH -> {
+                return Integer.toString(getMapWidth());
             }
+            case MAP_HEIGHT -> {
+                return Integer.toString(getMapHeight());
+            }
+            case HELL -> {
+                return Boolean.toString(isHELL());
+            }
+            case PLANTS_QUANTITY -> {
+                return Integer.toString(getPlantsQuantity());
+            }
+            case PLANTS_ENERGY -> {
+                return Integer.toString(getPlantsEnergy());
+            }
+            case NEW_PLANTS_QUANTITY -> {
+                return Integer.toString(getNewPlantsQuantity());
+            }
+            case CORPSES -> {
+                return Boolean.toString(isCORPSES());
+            }
+            case ANIMALS_QUANTITY -> {
+                return Integer.toString(getAnimalsQuantity());
+            }
+            case ANIMAL_ENERGY -> {
+                return Integer.toString(getAnimalEnergy());
+            }
+            case MIN_PROPAGATION_ENERGY -> {
+                return Integer.toString(getMinPropagationEnergy());
+            }
+            case PROPAGATION_LOSS -> {
+                return Integer.toString(getPropagationLoss());
+            }
+            case RANDOM_MUTATION -> {
+                return Boolean.toString(isRandomMutation());
+            }
+            case GENOME_SIZE -> {
+                return Integer.toString(getGenomeSize());
+            }
+            case CRAZY_ANIMALS -> {
+                return Boolean.toString(isCrazyAnimals());
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + environmentVariable);
+        }
     }
 }

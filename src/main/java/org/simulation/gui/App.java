@@ -66,6 +66,9 @@ public class App extends Application implements DayFinishedObserver {
         Scene scene = new Scene(this.mainPane, 1600, 900);
         createInterface();
         secondStage.setScene(scene);
+        secondStage.setOnCloseRequest(event -> {
+            this.engineThread.stop();
+        });
         secondStage.show();
     }
 
@@ -111,9 +114,11 @@ public class App extends Application implements DayFinishedObserver {
         dominantGeneButton.setOnAction((event -> {
             if (!map.isRunning()) {
                 map.getAnimalsOnMap().forEach(animal -> {
-                    if (animal.getGenotype().getGens().equals(map.countDominantGenome().getGens())) animal.setMarked(!animal.isMarked());
+                    if (animal.getGenotype().getGens().equals(map.countDominantGenome().getGens()))
+                        animal.setMarked(!animal.isMarked());
                 });
-            }}));
+            }
+        }));
         return dominantGeneButton;
     }
 
@@ -130,7 +135,7 @@ public class App extends Application implements DayFinishedObserver {
                 stopButton.setText("stop");
             }
 
-       }));
+        }));
         return stopButton;
     }
 

@@ -3,7 +3,6 @@ package org.simulation.app.models.map;
 import org.simulation.app.models.mapelement.elementcharacteristics.Vector2d;
 import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

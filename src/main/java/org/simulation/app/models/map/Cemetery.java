@@ -17,8 +17,8 @@ public class Cemetery {
 
 
     public Cemetery() {
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i <= height; i++) {
+            for (int j = 0; j <= width; j++) {
                 cemeteryMap.put(new Vector2d(j, i), 0);
             }
         }

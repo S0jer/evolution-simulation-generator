@@ -29,6 +29,7 @@ public class Animal implements MapElement, Comparable<Animal> {
     private Integer children;
 
     private final Genotype genotype;
+    private int plantsEaten = 0;
 
 
     public Animal(WorldMap worldMap, Vector2d animalPosition, Integer animalEnergy, MapDirection animalMapDirection, List<Integer> animalGens) {
@@ -62,13 +63,19 @@ public class Animal implements MapElement, Comparable<Animal> {
         Vector2d properPosition = this.worldMap.canMoveTo(oldAnimalPosition, newAnimalPosition);
         if (EnvironmentVariables.isHELL() && !newAnimalPosition.equals(properPosition))
             this.animalEnergy.lose(EnvironmentVariables.getMinPropagationEnergy());
+        loseMoveEnergy();
         this.animalPosition = properPosition;
         positionChanged(oldAnimalPosition, properPosition);
+    }
+
+    private void loseMoveEnergy() {
+        this.animalEnergy.lose(1);
     }
 
 
     public void eat() {
         this.animalEnergy.gain();
+        this.plantsEaten += 1;
     }
 
     private void changeDirection(Gene gene) {
@@ -168,5 +175,9 @@ public class Animal implements MapElement, Comparable<Animal> {
 
     public void incrementChildren() {
         this.children += 1;
+    }
+
+    public int getPlantsEaten() {
+        return this.plantsEaten;
     }
 }

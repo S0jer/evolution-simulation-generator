@@ -12,6 +12,8 @@ import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.toCollection;
+
 public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserver {
     private final Map<Vector2d, List<MapElement>> worldMap = new HashMap<>();
     private final Cemetery cemetery = new Cemetery();
@@ -145,11 +147,11 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
     }
 
     private List<Animal> animalsForBreed(List<Animal> animalsAt) {
-        return animalsAt.stream().filter(x -> x.getEnergy().getEnergyCount() >= EnvironmentVariables.getMinPropagationEnergy()).toList();
+        return animalsAt.stream().filter(x -> x.getEnergy().getEnergyCount() >= EnvironmentVariables.getMinPropagationEnergy()).collect(toCollection(ArrayList::new));
     }
 
-    public void placeGrass() {
-        for (int i = 0; i < EnvironmentVariables.getNewPlantsQuantity(); i++) {
+    public void placeGrass(Integer plantsQuantity) {
+        for (int i = 0; i < plantsQuantity; i++) {
             Plant plant = new Plant(this, cemetery);
             this.worldMap.computeIfAbsent(plant.getPosition(), k -> new ArrayList<>());
             worldMap.get(plant.getPosition()).add(plant);

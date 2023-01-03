@@ -22,7 +22,7 @@ public class MapInfo implements DayFinishedObserver {
     }
 
     private void update() {
-        dominantGenomeLabel.setText(this.map.countDominantGenome().toString());
+        this.dominantGenomeLabel.setText(this.map.countDominantGenome().toString());
     }
 
     public VBox getMapInfo() {

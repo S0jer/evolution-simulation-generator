@@ -121,14 +121,15 @@ public class Animal implements MapElement, Comparable<Animal> {
 
     @Override
     public String getPathToImage() {
+        List<String> paths = this.animalMapDirection.getToImagesPaths();
         if (marked) {
-            return "src/main/resources/special.png";
+            return paths.get(3);
         } else if (this.animalEnergy.getEnergyCount() >= EnvironmentVariables.getAnimalEnergy()) {
-            return "src/main/resources/animal-green.png";
+            return paths.get(0);
         } else if (this.animalEnergy.getEnergyCount() >= EnvironmentVariables.getAnimalEnergy() / 2) {
-            return "src/main/resources/animal-yellow.png";
+            return paths.get(1);
         } else {
-            return "src/main/resources/animal-red.png";
+            return paths.get(2);
         }
     }
 

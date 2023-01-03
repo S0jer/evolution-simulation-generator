@@ -3,18 +3,18 @@ package org.simulation.app.models.mapelement.envvariables;
 public class EnvironmentVariables {
     private static int MAP_WIDTH = 20;
     private static int MAP_HEIGHT = 20;
-    private static boolean HELL = true;
-    private static int PLANTS_QUANTITY = 4;
-    private static int PLANTS_ENERGY = 4;
-    private static int NEW_PLANTS_QUANTITY = 4;
-    private static boolean CORPSES = true;
-    private static int ANIMALS_QUANTITY = 7;
-    private static int ANIMAL_ENERGY = 15;
+    private static boolean HELL = false;
+    private static int PLANTS_QUANTITY = 70;
+    private static int PLANTS_ENERGY = 10;
+    private static int NEW_PLANTS_QUANTITY = 10;
+    private static boolean CORPSES = false;
+    private static int ANIMALS_QUANTITY = 20;
+    private static int ANIMAL_ENERGY = 20;
     private static int MIN_PROPAGATION_ENERGY = 7;
-    private static int PROPAGATION_LOSS = 4;
-    private static boolean RANDOM_MUTATION = false;
+    private static int PROPAGATION_LOSS = 5;
+    private static boolean RANDOM_MUTATION = true;
     private static int GENOME_SIZE = 32;
-    private static boolean CRAZY_ANIMALS = false;
+    private static boolean CRAZY_ANIMALS = true;
 
     private static int MOVE_ENERGY = 1;
 

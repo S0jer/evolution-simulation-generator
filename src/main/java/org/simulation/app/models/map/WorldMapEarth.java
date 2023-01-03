@@ -1,12 +1,13 @@
 package org.simulation.app.models.map;
 
 import org.simulation.app.models.mapelement.elementcharacteristics.Vector2d;
+import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 
 public class WorldMapEarth extends AbstractWorldMap {
 
     public WorldMapEarth() {
         this.placeInitialAnimals();
-        super.placeGrass();
+        super.placeGrass(EnvironmentVariables.getPlantsQuantity());
     }
 
     @Override

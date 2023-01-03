@@ -3,12 +3,12 @@ package org.simulation.app.models.map;
 import org.simulation.app.models.mapelement.elementcharacteristics.Vector2d;
 import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Cemetery {
-
     private final Map<Vector2d, Integer> cemeteryMap = new HashMap<>();
     Integer width = EnvironmentVariables.getMapWidth();
     Integer height = EnvironmentVariables.getMapHeight();
@@ -35,7 +35,7 @@ public class Cemetery {
 
     public void animalDeath(Vector2d gravePosition) {
         Integer deathsAtGravePosition = cemeteryMap.get(gravePosition);
-        if (deathsAtGravePosition.equals(minDeathsValue)) {
+        if (deathsAtGravePosition != null && deathsAtGravePosition.equals(minDeathsValue)) {
             minDeathsCounter -= 1;
             updateMinDeaths();
         }

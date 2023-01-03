@@ -2,6 +2,7 @@ package org.simulation.app.models.map;
 
 import org.simulation.app.models.RandomBehaviorGenerator;
 import org.simulation.app.models.mapelement.elementcharacteristics.Vector2d;
+import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 
 public class WorldMapHell extends AbstractWorldMap {
 
@@ -9,7 +10,7 @@ public class WorldMapHell extends AbstractWorldMap {
 
     public WorldMapHell() {
         this.placeInitialAnimals();
-        super.placeGrass();
+        super.placeGrass(EnvironmentVariables.getPlantsQuantity());
     }
 
     @Override

@@ -42,14 +42,14 @@ public class Plant implements MapElement {
     }
 
     private Vector2d defaultPlanter(int poolChooseNumber) {
-        int mapHeight = EnvironmentVariables.getMapHeight();
+        int mapHeight = EnvironmentVariables.getMapHeight() + 1;
         int bottomBorder = (int) ((mapHeight / 2) - mapHeight * 0.1);
         int upperBorder = (int) ((mapHeight / 2) + mapHeight * 0.1);
         if (poolChooseNumber == 0 || poolChooseNumber == 1) {
-            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
+            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth() + 1),
                     randomBehaviorGenerator.numberExceptGenerator(bottomBorder, upperBorder, mapHeight));
         } else {
-            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
+            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth() + 1),
                     randomBehaviorGenerator.numberToGenerator(upperBorder - bottomBorder) + bottomBorder);
         }
     }
@@ -59,13 +59,13 @@ public class Plant implements MapElement {
         if (numbersPool != null && !numbersPool.isEmpty() && (poolChooseNumber == 0 || poolChooseNumber == 1)) {
 
             int randomIndex = randomBehaviorGenerator.numberToGenerator(numbersPool.size());
-            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
-                    numbersPool.get(randomIndex).getY());
+            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth() + 1),
+                    numbersPool.get(randomIndex).getY() + 1);
         } else {
             numbersPool = this.cemetery.getMinDeathsPositionsList();
             int randomIndex = randomBehaviorGenerator.numberToGenerator(numbersPool.size());
-            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
-                    numbersPool.get(randomIndex).getY());
+            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth() + 1),
+                    numbersPool.get(randomIndex).getY() + 1);
         }
     }
 

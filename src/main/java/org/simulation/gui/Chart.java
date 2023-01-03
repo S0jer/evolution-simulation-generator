@@ -78,7 +78,6 @@ public class Chart implements DayFinishedObserver {
         if (EnvironmentVariables.isSaveData()) {
             csvWriter.createCsvDataSimple(countedAnimals, countedPlants, countedEmpty, countedAvgEnergy, countedAvgLifetime, countedAvgChildren);
         }
-
     }
 
     public LineChart<Number, Number> getLineChart() {

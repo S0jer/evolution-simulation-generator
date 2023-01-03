@@ -14,5 +14,6 @@ public enum EnvironmentVariable {
     PROPAGATION_LOSS,
     RANDOM_MUTATION,
     GENOME_SIZE,
-    CRAZY_ANIMALS;
+    CRAZY_ANIMALS,
+    SAVE_DATA;
 }

@@ -26,14 +26,13 @@ public class Menu {
         this.environmentVariables = new HashMap<>();
         this.startButton = new Button("start");
 
-
         createMenu();
         this.scene = new Scene(borderPane, 1280, 720);
     }
 
     private void createMenu() {
 //        EnvironmentVariables
-        VBox environmentVariables = new VBox(
+        VBox environmentVars = new VBox(
                 addParameter(EnvironmentVariable.MAP_WIDTH),
                 addParameter(EnvironmentVariable.MAP_HEIGHT),
                 addParameter(EnvironmentVariable.HELL),
@@ -47,11 +46,12 @@ public class Menu {
                 addParameter(EnvironmentVariable.PROPAGATION_LOSS),
                 addParameter(EnvironmentVariable.RANDOM_MUTATION),
                 addParameter(EnvironmentVariable.GENOME_SIZE),
-                addParameter(EnvironmentVariable.CRAZY_ANIMALS)
+                addParameter(EnvironmentVariable.CRAZY_ANIMALS),
+                addParameter(EnvironmentVariable.SAVE_DATA)
         );
 //        Title
         Label menuName = new Label("MENU");
-        menuName.setFont(new Font("Arial", 30));
+        menuName.setFont(new Font("Arial", 20));
 //
 //        Start button
         HBox buttonBox = new HBox(startButton);
@@ -59,11 +59,11 @@ public class Menu {
 
         VBox menu = new VBox(
                 menuName,
-                environmentVariables,
+                environmentVars,
                 buttonBox
         );
-        menu.setSpacing(50);
-        environmentVariables.setSpacing(25);
+        menu.setSpacing(30);
+        environmentVars.setSpacing(15);
         menu.setAlignment(Pos.CENTER);
         this.borderPane.setCenter(menu);
     }
@@ -82,48 +82,21 @@ public class Menu {
     public void submitInputs() {
         environmentVariables.forEach((key, value) -> {
             switch (key) {
-                case MAP_WIDTH -> {
-                    EnvironmentVariables.setMapWidth(Integer.parseInt(value.getText()));
-                }
-                case MAP_HEIGHT -> {
-                    EnvironmentVariables.setMapHeight(Integer.parseInt(value.getText()));
-                }
-                case HELL -> {
-                    EnvironmentVariables.setHELL(Boolean.parseBoolean(value.getText()));
-                }
-                case PLANTS_QUANTITY -> {
-                    EnvironmentVariables.setPlantsQuantity(Integer.parseInt(value.getText()));
-                }
-                case PLANTS_ENERGY -> {
-                    EnvironmentVariables.setPlantsEnergy(Integer.parseInt(value.getText()));
-                }
-                case NEW_PLANTS_QUANTITY -> {
-                    EnvironmentVariables.setNewPlantsQuantity(Integer.parseInt(value.getText()));
-                }
-                case CORPSES -> {
-                    EnvironmentVariables.setCORPSES(Boolean.parseBoolean(value.getText()));
-                }
-                case ANIMALS_QUANTITY -> {
-                    EnvironmentVariables.setAnimalsQuantity(Integer.parseInt(value.getText()));
-                }
-                case ANIMAL_ENERGY -> {
-                    EnvironmentVariables.setAnimalEnergy(Integer.parseInt(value.getText()));
-                }
-                case MIN_PROPAGATION_ENERGY -> {
-                    EnvironmentVariables.setMinPropagationEnergy(Integer.parseInt(value.getText()));
-                }
-                case PROPAGATION_LOSS -> {
-                    EnvironmentVariables.setPropagationLoss(Integer.parseInt(value.getText()));
-                }
-                case RANDOM_MUTATION -> {
-                    EnvironmentVariables.setRandomMutation(Boolean.parseBoolean(value.getText()));
-                }
-                case GENOME_SIZE -> {
-                    EnvironmentVariables.setGenomeSize(Integer.parseInt(value.getText()));
-                }
-                case CRAZY_ANIMALS -> {
-                    EnvironmentVariables.setCrazyAnimals(Boolean.parseBoolean(value.getText()));
-                }
+                case MAP_WIDTH -> EnvironmentVariables.setMapWidth(Integer.parseInt(value.getText()));
+                case MAP_HEIGHT -> EnvironmentVariables.setMapHeight(Integer.parseInt(value.getText()));
+                case HELL -> EnvironmentVariables.setHELL(Boolean.parseBoolean(value.getText()));
+                case PLANTS_QUANTITY -> EnvironmentVariables.setPlantsQuantity(Integer.parseInt(value.getText()));
+                case PLANTS_ENERGY -> EnvironmentVariables.setPlantsEnergy(Integer.parseInt(value.getText()));
+                case NEW_PLANTS_QUANTITY -> EnvironmentVariables.setNewPlantsQuantity(Integer.parseInt(value.getText()));
+                case CORPSES -> EnvironmentVariables.setCORPSES(Boolean.parseBoolean(value.getText()));
+                case ANIMALS_QUANTITY -> EnvironmentVariables.setAnimalsQuantity(Integer.parseInt(value.getText()));
+                case ANIMAL_ENERGY -> EnvironmentVariables.setAnimalEnergy(Integer.parseInt(value.getText()));
+                case MIN_PROPAGATION_ENERGY -> EnvironmentVariables.setMinPropagationEnergy(Integer.parseInt(value.getText()));
+                case PROPAGATION_LOSS -> EnvironmentVariables.setPropagationLoss(Integer.parseInt(value.getText()));
+                case RANDOM_MUTATION -> EnvironmentVariables.setRandomMutation(Boolean.parseBoolean(value.getText()));
+                case GENOME_SIZE -> EnvironmentVariables.setGenomeSize(Integer.parseInt(value.getText()));
+                case CRAZY_ANIMALS -> EnvironmentVariables.setCrazyAnimals(Boolean.parseBoolean(value.getText()));
+                case SAVE_DATA -> EnvironmentVariables.setSaveData(Boolean.parseBoolean(value.getText()));
             }
         });
     }

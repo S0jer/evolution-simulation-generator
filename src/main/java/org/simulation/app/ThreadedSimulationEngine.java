@@ -2,6 +2,7 @@ package org.simulation.app;
 
 import org.simulation.app.models.map.AbstractWorldMap;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,12 @@ public class ThreadedSimulationEngine implements Engine, Runnable {
     }
 
     public void dayFinished() {
-        observers.forEach(DayFinishedObserver::dayFinished);
+        observers.forEach(dayFinishedObserver -> {
+            try {
+                dayFinishedObserver.dayFinished();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

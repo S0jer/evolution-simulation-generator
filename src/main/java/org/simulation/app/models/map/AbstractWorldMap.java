@@ -188,7 +188,7 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
     }
 
     public int countPlants() {
-        return plantsOnMap.size();
+        return this.plantsOnMap.size();
     }
 
     public int countAvgEnergy() {
@@ -238,5 +238,13 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
 
     public Vector2d getRightTopCorner() {
         return this.upperBorder;
+    }
+
+    public int countEmpty() {
+        return upperBorder.getX()*upperBorder.getY() - (this.animalsOnMap.size() + this.plantsOnMap.size());
+    }
+
+    public int countMostPopularGenotype() {
+        return 1;
     }
 }

@@ -18,6 +18,8 @@ public class EnvironmentVariables {
 
     private static int MOVE_ENERGY = 1;
 
+    private static boolean SAVE_DATA = true;
+
     public static void setMapWidth(int mapWidth) {
         MAP_WIDTH = mapWidth;
     }
@@ -76,6 +78,10 @@ public class EnvironmentVariables {
 
     public static void setMoveEnergy(int moveEnergy) {
         MOVE_ENERGY = moveEnergy;
+    }
+
+    public static void setSaveData(boolean saveData) {
+        SAVE_DATA = saveData;
     }
 
     public static int getMapWidth() {
@@ -138,6 +144,10 @@ public class EnvironmentVariables {
         return MOVE_ENERGY;
     }
 
+    public static boolean isSaveData() {
+        return SAVE_DATA;
+    }
+
     public static String getValueAsString(EnvironmentVariable environmentVariable) {
         switch (environmentVariable) {
             case MAP_WIDTH -> {
@@ -181,6 +191,9 @@ public class EnvironmentVariables {
             }
             case CRAZY_ANIMALS -> {
                 return Boolean.toString(isCrazyAnimals());
+            }
+            case SAVE_DATA -> {
+                return Boolean.toString(isSaveData());
             }
             default -> throw new IllegalStateException("Unexpected value: " + environmentVariable);
         }

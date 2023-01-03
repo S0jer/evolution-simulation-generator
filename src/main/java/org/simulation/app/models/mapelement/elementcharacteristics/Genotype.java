@@ -61,6 +61,11 @@ public class Genotype {
         return gene;
     }
 
+    @Override
+    public String toString() {
+        return "Genotype: " + gens;
+    }
+
     public List<Gene> getGens() {
         return gens;
     }

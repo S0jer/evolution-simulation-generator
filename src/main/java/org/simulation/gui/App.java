@@ -18,7 +18,6 @@ import org.simulation.app.models.mapelement.MapElement;
 import org.simulation.app.models.mapelement.elementcharacteristics.Vector2d;
 import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 
-import java.util.List;
 
 import static java.lang.System.exit;
 
@@ -45,7 +44,7 @@ public class App extends Application implements DayFinishedObserver {
             this.mapGrid = new GridPane();
             mapGrid.setGridLinesVisible(true);
         } catch (IllegalArgumentException e) {
-            System.out.println(e);
+            e.printStackTrace();
             exit(0);
         }
     }
@@ -53,17 +52,16 @@ public class App extends Application implements DayFinishedObserver {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setScene(menu.getScene());
-        Stage secondStage = new Stage();
         primaryStage.show();
 
         menu.getStartButton().setOnAction((event -> {
-            Thread newEngineThread = new Thread(this.engineThread);
-            newEngineThread.start();
+            Stage secondStage = new Stage();
             this.menu.submitInputs();
             Scene scene = new Scene(this.mainPane, 1600, 900);
             createInterface();
             secondStage.setScene(scene);
             secondStage.show();
+            primaryStage.close();
         }));
     }
 
@@ -117,8 +115,8 @@ public class App extends Application implements DayFinishedObserver {
         grid.getColumnConstraints().clear();
         grid.getRowConstraints().clear();
         Integer minX = map.getLeftBottomCorner().getX();
-        Integer minY = map.getLeftBottomCorner().getY();
-        Integer maxX = map.getRightTopCorner().getX();
+        int minY = map.getLeftBottomCorner().getY();
+        int maxX = map.getRightTopCorner().getX();
         Integer maxY = map.getRightTopCorner().getY();
 
         Label yx = new Label("y/x");

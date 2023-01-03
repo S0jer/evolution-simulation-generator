@@ -35,5 +35,5 @@ w
 G.idea/sonarlint/issuestore/d/7/d740fbe8529e991c86f82841c1198939f02aa8b0,4\1\416b74f99e7e173978c0c475cd5d13df210515bb
 w
 G.idea/sonarlint/issuestore/5/2/52114fdaa426e9b83a3c5df4e11c4f0ebbcd814b,6\c\6c2193e090c53ebe039a28ee0f93415902762a26
-w
-G.idea/sonarlint/issuestore/e/8/e8927ae1f5775ee787b4f24ebea67cba5a074206,c\9\c97e98e91c10c8a5e2f07624fc25f2a93bc954bd
+<
+build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35

@@ -45,7 +45,6 @@ public class Genotype {
         }
     }
 
-
     public Gene getCurrentGene() {
         Gene gene = gens.get((this.currentGen) % genesSize);
         if (EnvironmentVariables.isCrazyAnimals()) {

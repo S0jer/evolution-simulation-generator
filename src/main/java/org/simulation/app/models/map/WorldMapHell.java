@@ -1,9 +1,7 @@
 package org.simulation.app.models.map;
 
 import org.simulation.app.models.RandomBehaviorGenerator;
-import org.simulation.app.models.mapelement.Animal;
 import org.simulation.app.models.mapelement.elementcharacteristics.Vector2d;
-import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 
 public class WorldMapHell extends AbstractWorldMap {
 
@@ -12,15 +10,6 @@ public class WorldMapHell extends AbstractWorldMap {
     public WorldMapHell() {
         this.placeInitialAnimals();
         super.placeGrass();
-    }
-
-    private void placeInitialAnimals() {
-        int startAnimals = EnvironmentVariables.getAnimalsQuantity();
-        for (int i = 0; i < startAnimals; i++) {
-            Vector2d pos = new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
-                    randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapHeight()));
-            this.place(new Animal(this, pos, EnvironmentVariables.getAnimalEnergy()));
-        }
     }
 
     @Override
@@ -34,8 +23,4 @@ public class WorldMapHell extends AbstractWorldMap {
         return properPosition;
     }
 
-    @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-
-    }
 }

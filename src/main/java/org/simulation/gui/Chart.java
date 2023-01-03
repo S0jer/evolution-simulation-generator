@@ -8,7 +8,6 @@ import org.simulation.app.DayFinishedObserver;
 import org.simulation.app.models.map.AbstractWorldMap;
 import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 
-import java.io.IOException;
 
 public class Chart implements DayFinishedObserver {
     private final LineChart<Number, Number> lineChart;
@@ -64,12 +63,12 @@ public class Chart implements DayFinishedObserver {
     }
 
     private void update() {
-        int countedAnimals = map.countAnimals();
-        int countedPlants = map.countPlants();
-        int countedEmpty = map.countEmpty();
-        int countedAvgEnergy = map.countAvgEnergy();
-        int countedAvgLifetime = map.countAvgLifetime();
-        int countedAvgChildren = map.countAvgChildren();
+        int countedAnimals = map.getChartDataProvider().countAnimals();
+        int countedPlants = map.getChartDataProvider().countPlants();
+        int countedEmpty = map.getChartDataProvider().countEmpty();
+        int countedAvgEnergy = map.getChartDataProvider().countAvgEnergy();
+        int countedAvgLifetime = map.getChartDataProvider().countAvgLifetime();
+        int countedAvgChildren = map.getChartDataProvider().countAvgChildren();
         animalSeries.getData().add(new XYChart.Data<>(daysCounter, countedAnimals));
         grassSeries.getData().add(new XYChart.Data<>(daysCounter, countedPlants));
         emptySeries.getData().add(new XYChart.Data<>(daysCounter, countedEmpty));

@@ -2,6 +2,7 @@ package org.simulation.app.models.map;
 
 import org.simulation.app.PositionChangeObserver;
 import org.simulation.app.models.EnergyCalculator;
+import org.simulation.app.models.RandomBehaviorGenerator;
 import org.simulation.app.models.mapelement.Animal;
 import org.simulation.app.models.mapelement.MapElement;
 import org.simulation.app.models.mapelement.Plant;
@@ -10,7 +11,6 @@ import org.simulation.app.models.mapelement.elementcharacteristics.Vector2d;
 import org.simulation.app.models.mapelement.envvariables.EnvironmentVariables;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserver {
     private final Map<Vector2d, List<MapElement>> worldMap = new HashMap<>();
@@ -18,9 +18,11 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
     private final Set<Animal> animalsOnMap = new HashSet<>();
     private final Set<Plant> plantsOnMap = new HashSet<>();
     private final Set<Animal> deadAnimals = new HashSet<>();
+    private final ChartDataProvider chartDataProvider = new ChartDataProvider(this);
     private boolean isRunning;
     Vector2d upperBorder = new Vector2d(EnvironmentVariables.getMapWidth(), EnvironmentVariables.getMapHeight());
     Vector2d bottomBorder = new Vector2d(0, 0);
+    private final RandomBehaviorGenerator randomBehaviorGenerator = new RandomBehaviorGenerator();
 
 
     @Override
@@ -39,16 +41,20 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
     }
 
     @Override
-    public List<MapElement> objectsAt(Vector2d position) {
-        return worldMap.get(position);
-    }
-
-    @Override
     public void place(Animal mapElement) {
         this.worldMap.computeIfAbsent(mapElement.getPosition(), k -> new ArrayList<>());
         animalsOnMap.add(mapElement);
         this.worldMap.get(mapElement.getPosition()).add(mapElement);
         mapElement.addObserver(this);
+    }
+
+    protected void placeInitialAnimals() {
+        int startAnimals = EnvironmentVariables.getAnimalsQuantity();
+        for (int i = 0; i < startAnimals; i++) {
+            Vector2d pos = new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
+                    randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapHeight()));
+            this.place(new Animal(this, pos, EnvironmentVariables.getAnimalEnergy()));
+        }
     }
 
     @Override
@@ -63,11 +69,8 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
                 delete(plant);
             }
         }
-
-
         mapElementsOld.remove(mapElement);
         mapElementsNew.add(mapElement);
-
         worldMap.put(newPosition, mapElementsNew);
         worldMap.put(oldPosition, mapElementsOld);
     }
@@ -106,36 +109,43 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
         int miny = this.bottomBorder.getY();
         int maxx = this.upperBorder.getX();
         int maxy = this.upperBorder.getY();
-        Animal firstParent, secondParent;
         for (int x = minx; x <= maxx; x++) {
             for (int y = miny; y <= maxy; y++) {
-                List<Animal> animalsOnPos = animalsAt(new Vector2d(x, y));
-                if (animalsOnPos != null) {
-                    List<Animal> animalsOnPosForBreed = animalsForBreed(animalsOnPos);
-
-                    if (animalsOnPosForBreed == null || animalsOnPosForBreed.size() < 2) {
-                        continue;
-                    }
-                    Collections.sort(animalsOnPosForBreed);
-                    Collections.reverse(animalsOnPosForBreed);
-
-                    firstParent = animalsOnPosForBreed.get(0);
-                    secondParent = animalsOnPosForBreed.get(1);
-                    if (EnergyCalculator.canBreed(firstParent.getEnergy()) && EnergyCalculator.canBreed(secondParent.getEnergy())) {
-                        Animal child = firstParent.breed(secondParent);
-                        place(child);
-                        firstParent.incrementChildren();
-                        secondParent.incrementChildren();
-                    }
-                }
+                breedOnPosition(x, y);
             }
         }
+    }
 
+    private void breedOnPosition(int x, int y) {
+        List<Animal> animalsOnPos = animalsAt(new Vector2d(x, y));
+        if (animalsOnPos != null) {
+            List<Animal> animalsOnPosForBreed = animalsForBreed(animalsOnPos);
 
+            if (animalsOnPosForBreed == null || animalsOnPosForBreed.size() < 2) {
+                return;
+            }
+            Collections.sort(animalsOnPosForBreed);
+            Collections.reverse(animalsOnPosForBreed);
+
+            getBestAndBreed(animalsOnPosForBreed);
+        }
+    }
+
+    private void getBestAndBreed(List<Animal> animalsOnPosForBreed) {
+        Animal firstParent;
+        Animal secondParent;
+        firstParent = animalsOnPosForBreed.get(0);
+        secondParent = animalsOnPosForBreed.get(1);
+        if (EnergyCalculator.canBreed(firstParent.getEnergy()) && EnergyCalculator.canBreed(secondParent.getEnergy())) {
+            Animal child = firstParent.breed(secondParent);
+            place(child);
+            firstParent.incrementChildren();
+            secondParent.incrementChildren();
+        }
     }
 
     private List<Animal> animalsForBreed(List<Animal> animalsAt) {
-        return animalsAt.stream().filter(x -> x.getEnergy().getEnergyCount() >= EnvironmentVariables.getMinPropagationEnergy()).collect(Collectors.toList());
+        return animalsAt.stream().filter(x -> x.getEnergy().getEnergyCount() >= EnvironmentVariables.getMinPropagationEnergy()).toList();
     }
 
     public void placeGrass() {
@@ -182,56 +192,6 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
         }
     }
 
-
-    public int countAnimals() {
-        return this.animalsOnMap.size();
-    }
-
-    public int countPlants() {
-        return this.plantsOnMap.size();
-    }
-
-    public int countAvgEnergy() {
-        int counter = 0;
-        int energy = 0;
-        for (Animal animal : this.animalsOnMap) {
-            energy += animal.getEnergy().getEnergyCount();
-            counter++;
-        }
-        if (counter > 0) {
-            return energy / counter;
-        } else return 0;
-    }
-
-
-    public int countAvgLifetime() {
-        int counter = 0;
-        int lifetime = 0;
-        for (Animal animal : deadAnimals) {
-            lifetime += animal.getLifetime();
-            counter++;
-        }
-        if (counter > 0) {
-            return lifetime / counter;
-        } else {
-            return 0;
-        }
-    }
-
-    public int countAvgChildren() {
-        int counter = 0;
-        int children = 0;
-        for (Animal animal : this.animalsOnMap) {
-            counter++;
-            children += animal.getChildren();
-        }
-        if (counter > 0) {
-            return children / counter;
-        } else {
-            return 0;
-        }
-    }
-
     public Vector2d getLeftBottomCorner() {
         return this.bottomBorder;
     }
@@ -240,11 +200,19 @@ public abstract class AbstractWorldMap implements WorldMap, PositionChangeObserv
         return this.upperBorder;
     }
 
-    public int countEmpty() {
-        return upperBorder.getX()*upperBorder.getY() - (this.animalsOnMap.size() + this.plantsOnMap.size());
+    public ChartDataProvider getChartDataProvider() {
+        return chartDataProvider;
     }
 
-    public int countMostPopularGenotype() {
-        return 1;
+    public Set<Animal> getAnimalsOnMap() {
+        return animalsOnMap;
+    }
+
+    public Set<Animal> getDeadAnimals() {
+        return deadAnimals;
+    }
+
+    public Set<Plant> getPlantsOnMap() {
+        return plantsOnMap;
     }
 }

@@ -30,6 +30,7 @@ public class Animal implements MapElement, Comparable<Animal> {
 
     private final Genotype genotype;
     private int plantsEaten = 0;
+    private boolean marked = false;
 
 
     public Animal(WorldMap worldMap, Vector2d animalPosition, Integer animalEnergy, MapDirection animalMapDirection, List<Integer> animalGens) {
@@ -120,7 +121,9 @@ public class Animal implements MapElement, Comparable<Animal> {
 
     @Override
     public String getPathToImage() {
-        if (this.animalEnergy.getEnergyCount() >= EnvironmentVariables.getAnimalEnergy()) {
+        if (marked) {
+            return "src/main/resources/special.png";
+        } else if (this.animalEnergy.getEnergyCount() >= EnvironmentVariables.getAnimalEnergy()) {
             return "src/main/resources/animal-green.png";
         } else if (this.animalEnergy.getEnergyCount() >= EnvironmentVariables.getAnimalEnergy() / 2) {
             return "src/main/resources/animal-yellow.png";
@@ -140,12 +143,30 @@ public class Animal implements MapElement, Comparable<Animal> {
 
         this.animalEnergy.lose(this.animalEnergy.getEnergyCount() * firstParentP);
         secondParent.getEnergy().lose(secondParent.getEnergy().getEnergyCount() * secondParentP);
-        Integer childEnergy = this.animalEnergy.getEnergyCount() * firstParentP + secondParent.getEnergy().getEnergyCount() * secondParentP;
+        Integer childEnergy = generateChildEnergy(secondParent, firstParentP, secondParentP);
         int directId = this.randomBehaviorGenerator.numberToGenerator(8);
         MapDirection mapDirection = MapDirection.values()[directId];
-        int getBorderPart = this.randomBehaviorGenerator.numberToGenerator(2);
+        List<Integer> animalsGensValues = generateChildGenes(secondParent, firstParentP, secondParentP);
+
+        return new Animal(this.worldMap, this.animalPosition, childEnergy, mapDirection, animalsGensValues);
+    }
+
+    private Integer generateChildEnergy(Animal secondParent, Integer firstParentP, Integer secondParentP) {
+        return this.animalEnergy.getEnergyCount() * firstParentP + secondParent.getEnergy().getEnergyCount() * secondParentP;
+    }
+
+    private List<Integer> generateChildGenes(Animal secondParent, Integer firstParentP, Integer secondParentP) {
         List<Gene> animalGens = new ArrayList<>();
         List<Integer> animalsGensValues;
+        int getBorderPoint = generateBorderPoint(firstParentP, secondParentP);
+        animalGens.addAll(this.genotype.getGens().subList(0, getBorderPoint + 1));
+        animalGens.addAll(secondParent.getGenotype().getGens().subList(getBorderPoint + 1, EnvironmentVariables.getGenomeSize()));
+        animalsGensValues = animalGens.stream().map(Gene::getValue).toList();
+        return animalsGensValues;
+    }
+
+    private int generateBorderPoint(Integer firstParentP, Integer secondParentP) {
+        int getBorderPart = this.randomBehaviorGenerator.numberToGenerator(2);
         int getBorderPoint;
         if (getBorderPart == 0) {
             getBorderPoint = EnvironmentVariables.getGenomeSize() * firstParentP;
@@ -153,11 +174,7 @@ public class Animal implements MapElement, Comparable<Animal> {
         } else {
             getBorderPoint = EnvironmentVariables.getGenomeSize() * secondParentP;
         }
-        animalGens.addAll(this.genotype.getGens().subList(0, getBorderPoint + 1));
-        animalGens.addAll(secondParent.getGenotype().getGens().subList(getBorderPoint + 1, EnvironmentVariables.getGenomeSize()));
-        animalsGensValues = animalGens.stream().map(Gene::getValue).toList();
-
-        return new Animal(this.worldMap, this.animalPosition, childEnergy, mapDirection, animalsGensValues);
+        return getBorderPoint;
     }
 
     @Override
@@ -179,5 +196,13 @@ public class Animal implements MapElement, Comparable<Animal> {
 
     public int getPlantsEaten() {
         return this.plantsEaten;
+    }
+
+    public boolean isMarked() {
+        return marked;
+    }
+
+    public void setMarked(boolean marked) {
+        this.marked = marked;
     }
 }

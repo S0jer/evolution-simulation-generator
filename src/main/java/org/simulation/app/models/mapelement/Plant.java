@@ -18,6 +18,10 @@ public class Plant implements MapElement {
     public Plant(WorldMap worldMap, Cemetery cemetery) {
         this.worldMap = worldMap;
         this.cemetery = cemetery;
+        findPlantPosition(worldMap);
+    }
+
+    private void findPlantPosition(WorldMap worldMap) {
         boolean foundPosition = false;
 
         while (!foundPosition) {
@@ -31,29 +35,37 @@ public class Plant implements MapElement {
     private Vector2d plantPlant() {
         int poolChooseNumber = randomBehaviorGenerator.behaviorGenerator();
         if (EnvironmentVariables.isCORPSES()) {
-            List<Vector2d> numbersPool = this.cemetery.getOtherDeathsPositionsList();
-            if (numbersPool != null && !numbersPool.isEmpty() && (poolChooseNumber == 0 || poolChooseNumber == 1)) {
-
-                int randomIndex = randomBehaviorGenerator.numberToGenerator(numbersPool.size());
-                return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
-                        numbersPool.get(randomIndex).getY());
-            } else {
-                numbersPool = this.cemetery.getMinDeathsPositionsList();
-                int randomIndex = randomBehaviorGenerator.numberToGenerator(numbersPool.size());
-                return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
-                        numbersPool.get(randomIndex).getY());
-            }
+            return corpsesPlanter(poolChooseNumber);
         } else {
-            int mapHeight = EnvironmentVariables.getMapHeight();
-            int bottomBorder = (int) ((mapHeight / 2) - mapHeight * 0.1);
-            int upperBorder = (int) ((mapHeight / 2) + mapHeight * 0.1);
-            if (poolChooseNumber == 0 || poolChooseNumber == 1) {
-                return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
-                        randomBehaviorGenerator.numberExceptGenerator(bottomBorder, upperBorder, mapHeight));
-            } else {
-                return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
-                        randomBehaviorGenerator.numberToGenerator(upperBorder - bottomBorder) + bottomBorder);
-            }
+            return defaultPlanter(poolChooseNumber);
+        }
+    }
+
+    private Vector2d defaultPlanter(int poolChooseNumber) {
+        int mapHeight = EnvironmentVariables.getMapHeight();
+        int bottomBorder = (int) ((mapHeight / 2) - mapHeight * 0.1);
+        int upperBorder = (int) ((mapHeight / 2) + mapHeight * 0.1);
+        if (poolChooseNumber == 0 || poolChooseNumber == 1) {
+            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
+                    randomBehaviorGenerator.numberExceptGenerator(bottomBorder, upperBorder, mapHeight));
+        } else {
+            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
+                    randomBehaviorGenerator.numberToGenerator(upperBorder - bottomBorder) + bottomBorder);
+        }
+    }
+
+    private Vector2d corpsesPlanter(int poolChooseNumber) {
+        List<Vector2d> numbersPool = this.cemetery.getOtherDeathsPositionsList();
+        if (numbersPool != null && !numbersPool.isEmpty() && (poolChooseNumber == 0 || poolChooseNumber == 1)) {
+
+            int randomIndex = randomBehaviorGenerator.numberToGenerator(numbersPool.size());
+            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
+                    numbersPool.get(randomIndex).getY());
+        } else {
+            numbersPool = this.cemetery.getMinDeathsPositionsList();
+            int randomIndex = randomBehaviorGenerator.numberToGenerator(numbersPool.size());
+            return new Vector2d(randomBehaviorGenerator.numberToGenerator(EnvironmentVariables.getMapWidth()),
+                    numbersPool.get(randomIndex).getY());
         }
     }
 

@@ -7,14 +7,12 @@ import org.simulation.app.models.map.AbstractWorldMap;
 
 public class MapInfo implements DayFinishedObserver {
     private final AbstractWorldMap map;
-    private VBox mapInfo;
-    private Label dominantGenomeLabel;
-
+    private final VBox mapInfo;
+    private final Label dominantGenomeLabel;
 
     public MapInfo(AbstractWorldMap map) {
         this.map = map;
         this.dominantGenomeLabel = new Label(this.map.countDominantGenome().toString());
-
         this.mapInfo = new VBox(dominantGenomeLabel);
     }
 

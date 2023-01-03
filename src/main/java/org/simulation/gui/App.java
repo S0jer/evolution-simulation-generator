@@ -55,14 +55,18 @@ public class App extends Application implements DayFinishedObserver {
         primaryStage.show();
 
         menu.getStartButton().setOnAction((event -> {
-            Stage secondStage = new Stage();
-            this.menu.submitInputs();
-            Scene scene = new Scene(this.mainPane, 1600, 900);
-            createInterface();
-            secondStage.setScene(scene);
-            secondStage.show();
+            runSimulation();
             primaryStage.close();
         }));
+    }
+
+    private void runSimulation() {
+        Stage secondStage = new Stage();
+        this.menu.submitInputs();
+        Scene scene = new Scene(this.mainPane, 1600, 900);
+        createInterface();
+        secondStage.setScene(scene);
+        secondStage.show();
     }
 
     private void createInterface() {
@@ -92,6 +96,28 @@ public class App extends Application implements DayFinishedObserver {
 
 
 //        STOP BUTTONS
+        Button stopButton = createStopButton();
+
+//        MARK DOMINANT GENE
+        Button dominantGeneButton = createDominantGeneButton();
+
+        VBox mainBox = new VBox(mapGrid, stopButton, dominantGeneButton);
+
+        mainPane.setLeft(mainBox);
+    }
+
+    private Button createDominantGeneButton() {
+        Button dominantGeneButton = new Button("Mark dominant");
+        dominantGeneButton.setOnAction((event -> {
+            if (!map.isRunning()) {
+                map.getAnimalsOnMap().forEach(animal -> {
+                    if (animal.getGenotype().getGens().equals(map.countDominantGenome().getGens())) animal.setMarked(!animal.isMarked());
+                });
+            }}));
+        return dominantGeneButton;
+    }
+
+    private Button createStopButton() {
         Button stopButton = new Button("stop");
         stopButton.setOnAction((event -> {
             if (map.isRunning()) {
@@ -104,11 +130,8 @@ public class App extends Application implements DayFinishedObserver {
                 stopButton.setText("stop");
             }
 
-        }));
-
-        VBox mainBox = new VBox(mapGrid, stopButton);
-
-        mainPane.setLeft(mainBox);
+       }));
+        return stopButton;
     }
 
     public void createAxes(GridPane grid, AbstractWorldMap map) {
@@ -125,16 +148,24 @@ public class App extends Application implements DayFinishedObserver {
 
         grid.getColumnConstraints().add(new ColumnConstraints(boxSize));
         grid.getRowConstraints().add(new RowConstraints(boxSize));
-        for (Integer i = minX; i <= maxX; i++) {
-            Label label = new Label(i.toString());
-            grid.add(label, i - minX + 1, 0, 1, 1);
-            grid.getColumnConstraints().add(new ColumnConstraints(boxSize));
-            GridPane.setHalignment(label, HPos.CENTER);
-        }
+        setColumns(grid, minX, maxX);
+        setRows(grid, minY, maxY);
+    }
+
+    private void setRows(GridPane grid, int minY, Integer maxY) {
         for (Integer i = maxY; i >= minY; i--) {
             Label label = new Label(i.toString());
             grid.add(label, 0, maxY - i + 1, 1, 1);
             grid.getRowConstraints().add(new RowConstraints(boxSize));
+            GridPane.setHalignment(label, HPos.CENTER);
+        }
+    }
+
+    private void setColumns(GridPane grid, Integer minX, int maxX) {
+        for (Integer i = minX; i <= maxX; i++) {
+            Label label = new Label(i.toString());
+            grid.add(label, i - minX + 1, 0, 1, 1);
+            grid.getColumnConstraints().add(new ColumnConstraints(boxSize));
             GridPane.setHalignment(label, HPos.CENTER);
         }
     }
@@ -149,20 +180,24 @@ public class App extends Application implements DayFinishedObserver {
             for (int y = minY; y <= maxY; y++) {
                 Vector2d pos = new Vector2d(x, y);
                 if (map.isOccupied(pos)) {
-                    MapElement mapElement = map.objectAt(pos);
-                    GuiElementBox guiElementBox = new GuiElementBox(mapElement);
-                    if (mapElement instanceof Animal) {
-                        guiElementBox.getvBox().setOnMouseClicked((event -> {
-                            if (!map.isRunning()) {
-                                animalInfo = new AnimalInfo((Animal) mapElement);
-                                mainPane.setBottom(animalInfo.getInfo());
-                            }
-                        }));
-                    }
-                    grid.add(guiElementBox.getvBox(), x - minX + 1, maxY + 1 - y, 1, 1);
+                    addElementToGrid(grid, map, minX, maxY, x, y, pos);
                 }
             }
         }
+    }
+
+    private void addElementToGrid(GridPane grid, AbstractWorldMap map, int minX, int maxY, int x, int y, Vector2d pos) {
+        MapElement mapElement = map.objectAt(pos);
+        GuiElementBox guiElementBox = new GuiElementBox(mapElement);
+        if (mapElement instanceof Animal) {
+            guiElementBox.getvBox().setOnMouseClicked((event -> {
+                if (!map.isRunning()) {
+                    animalInfo = new AnimalInfo((Animal) mapElement);
+                    mainPane.setBottom(animalInfo.getInfo());
+                }
+            }));
+        }
+        grid.add(guiElementBox.getvBox(), x - minX + 1, maxY + 1 - y, 1, 1);
     }
 
     @Override

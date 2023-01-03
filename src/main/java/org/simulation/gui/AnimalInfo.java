@@ -32,10 +32,10 @@ public class AnimalInfo {
         activeGeneTitle.setFont(basicFont);
         HBox activeGeneBox = new HBox(activeGeneTitle, activeGene);
         activeGeneBox.setAlignment(Pos.CENTER);
-//        NUMBER OF CHILDRENS
+//        NUMBER OF CHILDREN
         children = new Label(String.valueOf(animal.getChildren()));
         children.setFont(basicFont);
-        Label childrenTitle = new Label("Number of Childrens: ");
+        Label childrenTitle = new Label("Number of Children: ");
         childrenTitle.setFont(basicFont);
         HBox childrenBox = new HBox(childrenTitle, children);
         childrenBox.setAlignment(Pos.CENTER);
